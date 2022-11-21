@@ -7,7 +7,6 @@ void should_set_suite_name(TestSuite* suite){
 
 void should_add_assertion_result(TestSuite* suite){
     TestSuite* test = test_CreateSuite("fake");
-    
     test_IsFalse("fake_test",test,1);
     test_IsNotNull(__func__,suite,"failure message",test->failedAssertionListHead->failureMessage);
     free(test);

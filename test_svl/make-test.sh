@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
-gcc tests/main.c -Llib -lTestSuite -Wall -o tests.a
-./tests.a
+mkdir -p bin
+gcc tests/main.c -Llib -lTestSuite -Wall -o bin/tests.a
+bin/tests.a
