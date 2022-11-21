@@ -1,5 +1,5 @@
 #include "includes.h"
-
+#include <stdio.h>
 int main(){
 
     TestSuite* testSuites[]={
@@ -11,11 +11,18 @@ int main(){
     int failed=0;
 
     for(int i=0;i<count;i++){
-        failed = failed || test_GetResults(testSuites[i]);
+        TestSuite* suite=testSuites[i];
+        failed = failed || test_GetResults(suite);
+        AssertionResult* node=suite->failedAssertionListHead;
+        if(node){
+            printf("%s\n", suite->suiteName);
+        }
+        while(node){
+            printf("\t%s: %s\n",node->functionName, node->failureMessage);
+            node=node->next;
+        }
+        
     }
 
     return !failed;
 }
-
-
-

@@ -5,7 +5,7 @@
 
 #include "TestSuite.h"
 
-void failAssertion(TestSuite* suite);
+void failAssertion(const char* functionName, TestSuite* suite, char* str);
 
 TestSuite* test_CreateSuite(const char* suiteName){
     
@@ -32,6 +32,33 @@ int test_GetResults(TestSuite* suite){
     return 1;
 }
 
+void test_Pass(const char* functionName, TestSuite* suite){
+    suite->assertions++;
+}
+
+void test_Fail(const char* functionName, TestSuite* suite, char* msg){
+    suite->assertions++;
+    failAssertion(functionName,suite,"failed");
+}
+
+void test_IsTrue(const char* functionName, TestSuite* suite, int item){
+    suite->assertions++;
+    
+    if(item > 0)
+        return;
+
+    failAssertion(functionName, suite, "is false");
+}
+
+void test_IsFalse(const char* functionName, TestSuite* suite, int item){
+    suite->assertions++;
+    
+    if(item <= 0)
+        return;
+
+    failAssertion(functionName, suite, "is true");
+}
+
 void test_IsEqual(const char* functionName, TestSuite* suite, int lhs, int rhs){
     
     suite->assertions++;
@@ -39,18 +66,36 @@ void test_IsEqual(const char* functionName, TestSuite* suite, int lhs, int rhs){
     if(lhs == rhs)
         return;
 
-    failAssertion(suite);    
+    failAssertion(functionName, suite, "not equal");
 }
 
-void test_IsNotNull(const char* functionName, TestSuite* suite, char* str){
+void test_IsNotNull(const char* functionName, TestSuite* suite, const char* variableName, char* str){
     suite->assertions++;
     
     if(strlen(str) > 0)
         return;
 
-    failAssertion(suite);
+    const char* isNotNull=" is not null.";
+    int msgLen = strlen(variableName) + strlen(isNotNull) + 1;
+    char msg[msgLen];
+    sprintf(msg,"%s%s",variableName,isNotNull);
+    failAssertion(functionName, suite, msg);
 }
 
-void failAssertion(TestSuite* suite){
+void failAssertion(const char* functionName, TestSuite* suite, char* message){
     suite->failedAssertions++;
+
+    AssertionResult* result = test_CreateAssertionResult(functionName,message);
+
+    if(suite->failedAssertionListTail != NULL){
+        suite->failedAssertionListTail->next = result;
+    }
+
+    suite->failedAssertionListTail = result;
+
+    if(suite->failedAssertionListHead == NULL){
+        suite->failedAssertionListHead = suite->failedAssertionListTail;
+    }
+
+
 }

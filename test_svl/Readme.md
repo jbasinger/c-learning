@@ -17,6 +17,9 @@ Things with ? in them are still unsure
 * Outputs return error code if test fails, prints failures
 * Outputs return code 0, prints success
 * printing toggle-able for CI/CD
+* Create some reporting interface
+    * One that prints to the terminal
+    * One that can output files
 
 ## Behind the scenes
 
@@ -44,6 +47,7 @@ int main(){
 ## API
 * A pointer to the service to run assertions is passed into test functions
 * Assertions
+    * IsTrue/False - int based
     * Equals - int, float, double, long, char
     * Not equals
     * Greater Than
