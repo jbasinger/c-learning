@@ -1,0 +1,6 @@
+services:
+    cli:
+        image: svl/c-stuff:cli
+        build: .
+        volumes:
+            - "./:/code"

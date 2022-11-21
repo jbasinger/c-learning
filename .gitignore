@@ -1,0 +1,5 @@
+.vscode/
+obj/
+lib/
+*.a
+*.o
